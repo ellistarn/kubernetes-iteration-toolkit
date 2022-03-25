@@ -46,7 +46,7 @@ func main() {
 	manager := controllers.NewManagerOrDie(controllerruntime.GetConfigOrDie(), controllerruntime.Options{
 		LeaderElection:          true,
 		LeaderElectionID:        "kit-leader-election",
-		Scheme:                  scheme.SubstrateCluster,
+		Scheme:                  scheme.EnvironmentCluster,
 		MetricsBindAddress:      fmt.Sprintf(":%d", options.MetricsPort),
 		Port:                    options.WebhookPort,
 		LeaderElectionNamespace: "kit",

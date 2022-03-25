@@ -35,11 +35,11 @@ import (
 )
 
 type Controller struct {
-	substrateClient *kubeprovider.Client
+	environmentClient *kubeprovider.Client
 }
 
 func New(kubeClient *kubeprovider.Client) *Controller {
-	return &Controller{substrateClient: kubeClient}
+	return &Controller{environmentClient: kubeClient}
 }
 
 // Reconcile adds add-ons to the guest cluster provisioned
@@ -51,7 +51,7 @@ func (c *Controller) Reconcile(ctx context.Context, controlPlane *v1alpha1.Contr
 	}
 	// reconcile addons to the guest cluster
 	for _, resource := range []controlplane.Controller{
-		KubeProxyController(guestClusterClient, c.substrateClient),
+		KubeProxyController(guestClusterClient, c.environmentClient),
 		CoreDNSController(guestClusterClient),
 	} {
 		if err := resource.Reconcile(ctx, controlPlane); err != nil {
@@ -66,7 +66,7 @@ func (c *Controller) Reconcile(ctx context.Context, controlPlane *v1alpha1.Contr
 // admin config stored in management cluster
 func (c *Controller) createKubeClient(ctx context.Context, nn types.NamespacedName) (*kubeprovider.Client, error) {
 	// Get the admin kube config stored in a secret in the management cluster
-	adminSecret, err := keypairs.Reconciler(c.substrateClient).GetSecretFromServer(ctx, object.NamespacedName(
+	adminSecret, err := keypairs.Reconciler(c.environmentClient).GetSecretFromServer(ctx, object.NamespacedName(
 		master.KubeAdminSecretNameFor(nn.Name), nn.Namespace))
 	if err != nil {
 		return nil, err

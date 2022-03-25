@@ -1,6 +1,6 @@
 # KIT Development guide
 
-If you are developing KIT operator, finish the installation steps listed in the [README](../README.md). Once KIT is installed in the substrate cluster, follow these steps to make changes and test the operator.
+If you are developing KIT operator, finish the installation steps listed in the [README](../README.md). Once KIT is installed in the environment cluster, follow these steps to make changes and test the operator.
 
 ## Build and Deploy
 

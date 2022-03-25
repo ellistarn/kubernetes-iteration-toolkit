@@ -50,4 +50,4 @@ jobs:
     - name: Build the KIT CLI
       run: |
         GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -o ./bin/kitctl ./cmd/
-      working-directory: substrate
+      working-directory: environment

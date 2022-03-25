@@ -3,7 +3,7 @@ Description: Resources used by https://github.com/awslabs/kit/operator
 Parameters:
   ClusterName:
     Type: String
-    Description: "Substrate/host cluster name"
+    Description: "Environment/host cluster name"
 Resources:
   KitControllerPolicy:
     Type: "AWS::IAM::ManagedPolicy"

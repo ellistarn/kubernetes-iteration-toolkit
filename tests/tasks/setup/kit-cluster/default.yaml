@@ -65,11 +65,11 @@ spec:
         master:
           apiServer:
             spec:
-              nodeSelector: 
+              nodeSelector:
                 node.kubernetes.io/instance-type: $(params.cp-instance-type)
-              containers: 
+              containers:
               - name: apiserver
-                args: 
+                args:
                   - --max-requests-inflight=$(params.max-requests-inflight)
                   - --max-mutating-requests-inflight=$(params.max-mutating-requests)
           controllerManager:
@@ -86,11 +86,11 @@ spec:
                   - --kube-api-qps=$(params.scheduler-qps)
         etcd:
           spec:
-            nodeSelector: 
+            nodeSelector:
               node.kubernetes.io/instance-type: $(params.cp-instance-type)
       EOL
       aws sts get-caller-identity
-      #validate 
+      #validate
       kubectl get pods -A
       kubectl create -f $(workspaces.config.path)/cp.yaml
       nodes=$(params.node_count)
@@ -103,7 +103,7 @@ spec:
       kind: DataPlane
       metadata:
         name: "$asg_name-$1"
-      spec: 
+      spec:
         clusterName: $(params.cluster-name) # Desired Cluster Name
         nodeCount: $2
         subnetSelector:
@@ -122,13 +122,13 @@ spec:
       for i in $(seq 1 $asgs)
       do
       #max number of nodes KIT operators allows per ASG
-      create_dp $i 1000 
+      create_dp $i 1000
       done
       remaining_nodes=$((nodes%1000))
       create_dp 0 $remaining_nodes
       # sleep for kude-admin config secret for kit guest cluster to appear
       sleep 30
-      #Get the admin KUBECONFIG for the guest cluster from the substrate cluster
+      #Get the admin KUBECONFIG for the guest cluster from the environment cluster
       kubectl get secret $(params.cluster-name)-kube-admin-config -ojsonpath='{.data.config}' | base64 -d > $(workspaces.config.path)/kubeconfig
       # wait for NLB APIServer endpoint to be available
       sleep 300
@@ -136,6 +136,6 @@ spec:
       #Todo: CNI installation only works for `us-west-2`, yet to decide how to tackle other regions.
       kubectl --kubeconfig=$(workspaces.config.path)/kubeconfig apply -f https://raw.githubusercontent.com/aws/amazon-vpc-cni-k8s/master/config/v1.9/aws-k8s-cni.yaml
       sleep 60
-      kubectl --kubeconfig=$(workspaces.config.path)/kubeconfig get pods -A 
-      # for nodes to become ready 
+      kubectl --kubeconfig=$(workspaces.config.path)/kubeconfig get pods -A
+      # for nodes to become ready
       sleep $((nodes/6))

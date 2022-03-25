@@ -23,14 +23,14 @@ import (
 )
 
 var (
-	SubstrateCluster = runtime.NewScheme()
+	EnvironmentCluster = runtime.NewScheme()
 	GuestCluster     = runtime.NewScheme()
 )
 
 func init() {
-	_ = clientgoscheme.AddToScheme(SubstrateCluster)
-	_ = cp.AddToScheme(SubstrateCluster)
-	_ = dp.AddToScheme(SubstrateCluster)
+	_ = clientgoscheme.AddToScheme(EnvironmentCluster)
+	_ = cp.AddToScheme(EnvironmentCluster)
+	_ = dp.AddToScheme(EnvironmentCluster)
 
 	_ = clientgoscheme.AddToScheme(GuestCluster)
 }

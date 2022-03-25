@@ -1,7 +1,7 @@
 # Update the version and SHA256 for the CLI when new version is released
 require 'formula'
 class Kitctl < Formula
-  homepage 'https://github.com/awslabs/kubernetes-iteration-toolkit/substrate'
+  homepage 'https://github.com/awslabs/kubernetes-iteration-toolkit/environment'
   version 'v0.0.8'
   if OS.mac? && Hardware::CPU.is_64_bit?
     url 'https://github.com/awslabs/kubernetes-iteration-toolkit/releases/download/v0.0.8/kitctl_v0.0.8_darwin_amd64.zip'

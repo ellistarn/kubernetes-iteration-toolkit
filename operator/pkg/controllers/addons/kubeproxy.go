@@ -45,15 +45,15 @@ const (
 
 type KubeProxy struct {
 	kubeClient       *kubeprovider.Client
-	substrateCluster *kubeprovider.Client
+	environmentCluster *kubeprovider.Client
 }
 
 type reconcileProxyResources func(context.Context, *v1alpha1.ControlPlane) (err error)
 
-func KubeProxyController(kubeClient, substrateCluster *kubeprovider.Client) *KubeProxy {
+func KubeProxyController(kubeClient, environmentCluster *kubeprovider.Client) *KubeProxy {
 	return &KubeProxy{
 		kubeClient:       kubeClient,
-		substrateCluster: substrateCluster,
+		environmentCluster: environmentCluster,
 	}
 }
 
@@ -102,12 +102,12 @@ func (k *KubeProxy) kubeConfig(ctx context.Context, controlPlane *v1alpha1.Contr
 }
 
 func (k *KubeProxy) controlPlaneCASecret(ctx context.Context, controlPlane *v1alpha1.ControlPlane) (*v1.Secret, error) {
-	return keypairs.Reconciler(k.substrateCluster).GetSecretFromServer(ctx,
+	return keypairs.Reconciler(k.environmentCluster).GetSecretFromServer(ctx,
 		object.NamespacedName(master.RootCASecretNameFor(controlPlane.ClusterName()), controlPlane.Namespace))
 }
 
 func (k *KubeProxy) controlPlaneEndPoint(ctx context.Context, controlPlane *v1alpha1.ControlPlane) (string, error) {
-	return master.GetClusterEndpoint(ctx, k.substrateCluster,
+	return master.GetClusterEndpoint(ctx, k.environmentCluster,
 		object.NamespacedName(controlPlane.ClusterName(), controlPlane.Namespace))
 }
 

@@ -3,7 +3,7 @@ Description: Resources used by https://github.com/aws/karpenter
 Parameters:
   ClusterName:
     Type: String
-    Description: "Substrate cluster name"
+    Description: "Environment cluster name"
 Resources:
   KarpenterNodeInstanceProfile:
     Type: "AWS::IAM::InstanceProfile"
